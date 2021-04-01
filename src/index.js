@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import GitLabStrategy from 'passport-gitlab2';
 
+import { startNodeJSWiki } from './wiki';
 
 require('dotenv').config();
 
@@ -16,14 +17,14 @@ app.use('/', express.static(path.join(__dirname, '..', 'static')));
 app.use(bodyParser.json());
 
 app.use(passport.initialize());
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
   done(null, user);
 });
-passport.deserializeUser(function(user, done) {
+passport.deserializeUser(function (user, done) {
   done(null, user);
 });
 
-const gitlabCallbackPath = 'auth/gitlab/callback/'
+const gitlabCallbackPath = 'auth/gitlab/callback/';
 passport.use(
   new GitLabStrategy(
     {
@@ -54,6 +55,6 @@ app.get(
   }
 );
 
-
 app.set('port', port);
 app.listen(app.get('port'), () => console.log(`Server is running on port ${app.get('port')}`));
+startNodeJSWiki();

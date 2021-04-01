@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/linonetwo/try-passportjs-gitlab-tiddlywiki#readme",
   "dependencies": {
+    "@tiddlygit/tiddlywiki": "^5.1.24-prerelease.20210331",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
