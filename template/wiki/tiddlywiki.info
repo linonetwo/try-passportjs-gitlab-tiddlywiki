@@ -24,7 +24,7 @@
     "tiddlywiki/qrcode"
   ],
   "themes": [
-    "linonetwo/itonnote"
+    "tiddlywiki/vanilla"
   ],
   "languages": [
     "zh-Hans"
