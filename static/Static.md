@@ -1,0 +1,1 @@
+Try static file serving
