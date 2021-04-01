@@ -11,6 +11,8 @@ import getLocalLoginStrategy from './server/passport/local-login';
 
 require('dotenv').config();
 
+const port = process.env.PORT || 8000;
+
 const app = express();
 app.use(cors());
 app.use('/', express.static(path.join(__dirname, '..', 'static')));
@@ -28,12 +30,13 @@ class User {
 passport.use('local-signup', getLocalSignupStrategy(User));
 passport.use('local-login', getLocalLoginStrategy(User));
 
+const gitlabCallbackPath = 'auth/gitlab/callback/'
 passport.use(
   new GitLabStrategy(
     {
       clientID: process.env.GITLAB_APP_ID,
       clientSecret: process.env.GITLAB_APP_SECRET,
-      callbackURL: 'http://localhost:8000/auth/gitlab/callback',
+      callbackURL: `http://localhost:${port}/${gitlabCallbackPath}`,
     },
     function (accessToken, refreshToken, profile, cb) {
       // DEBUG: console
@@ -49,7 +52,7 @@ passport.use(
 app.get('/auth/gitlab', passport.authenticate('gitlab'));
 
 app.get(
-  '/auth/gitlab/callback',
+  `/${gitlabCallbackPath}`,
   passport.authenticate('gitlab', {
     failureRedirect: '/login',
   }),
@@ -61,5 +64,5 @@ app.get(
 
 app.use('/auth/local', authRoutes);
 
-app.set('port', process.env.PORT || 8000);
+app.set('port', port);
 app.listen(app.get('port'), () => console.log(`Server is running on port ${app.get('port')}`));
