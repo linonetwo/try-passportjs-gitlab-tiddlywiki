@@ -2,12 +2,12 @@ import path from 'path';
 import tiddlywiki from '@tiddlygit/tiddlywiki';
 // import tiddlywiki from 'tiddlywiki';
 
-export function startNodeJSWiki(
-  { homePath, tiddlyWikiHost = '0.0.0.0', tiddlyWikiPort = 5112, userName } = {
-    homePath: path.join(__dirname, '..', 'template', 'wiki'),
-    userName: 'LinOnetwo',
-  }
-) {
+export function startNodeJSWiki({
+  homePath = path.join(__dirname, '..', 'template', 'wiki'),
+  tiddlyWikiHost = '127.0.0.1',
+  tiddlyWikiPort = 51112,
+  userName = 'LinOnetwo',
+} = {}) {
   return new Promise((resolve, reject) => {
     const $tw = tiddlywiki.TiddlyWiki();
     try {
