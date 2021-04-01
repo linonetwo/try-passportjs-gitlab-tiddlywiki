@@ -31,6 +31,7 @@ passport.use(
       clientID: process.env.GITLAB_APP_ID,
       clientSecret: process.env.GITLAB_APP_SECRET,
       callbackURL: `http://localhost:${port}/${gitlabCallbackPath}`,
+      baseURL: 'https://gitlab.com/',
     },
     function (accessToken, refreshToken, profile, cb) {
       // DEBUG: console
