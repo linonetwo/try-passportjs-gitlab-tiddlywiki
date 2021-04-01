@@ -21,7 +21,8 @@
     "tiddlywiki/markdown",
     "tiddlywiki/sax",
     "tiddlywiki/text-slicer",
-    "tiddlywiki/qrcode"
+    "tiddlywiki/qrcode",
+    "linonetwo/prevent-edit"
   ],
   "themes": [
     "tiddlywiki/vanilla"
