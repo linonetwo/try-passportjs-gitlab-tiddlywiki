@@ -5,9 +5,6 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import GitLabStrategy from 'passport-gitlab2';
 
-import authRoutes from './server/routes/auth';
-import getLocalSignupStrategy from './server/passport/local-signup';
-import getLocalLoginStrategy from './server/passport/local-login';
 
 require('dotenv').config();
 
@@ -19,16 +16,12 @@ app.use('/', express.static(path.join(__dirname, '..', 'static')));
 app.use(bodyParser.json());
 
 app.use(passport.initialize());
-
-class User {
-  constructor(email, password, name) {
-    this.email = email;
-    this.password = password;
-    this.name = name;
-  }
-}
-passport.use('local-signup', getLocalSignupStrategy(User));
-passport.use('local-login', getLocalLoginStrategy(User));
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 const gitlabCallbackPath = 'auth/gitlab/callback/'
 passport.use(
@@ -40,11 +33,10 @@ passport.use(
     },
     function (accessToken, refreshToken, profile, cb) {
       // DEBUG: console
-      console.log(`profile`, profile);
-      cb(undefined, profile);
-      // User.findOrCreate({ gitlabId: profile.id }, function (err, user) {
-      //   return cb(err, user);
-      // });
+      console.log(`profile`, JSON.stringify(profile, undefined, '  '));
+      // DEBUG: console
+      console.log(`accessToken, refreshToken,`, accessToken, refreshToken);
+      cb(undefined, accessToken);
     }
   )
 );
@@ -54,7 +46,7 @@ app.get('/auth/gitlab', passport.authenticate('gitlab'));
 app.get(
   `/${gitlabCallbackPath}`,
   passport.authenticate('gitlab', {
-    failureRedirect: '/login',
+    failureRedirect: '/login.html',
   }),
   function (req, res) {
     // Successful authentication, redirect home.
@@ -62,7 +54,6 @@ app.get(
   }
 );
 
-app.use('/auth/local', authRoutes);
 
 app.set('port', port);
 app.listen(app.get('port'), () => console.log(`Server is running on port ${app.get('port')}`));
